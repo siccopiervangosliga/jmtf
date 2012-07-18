@@ -7,8 +7,7 @@ package jmtf;
  * @author Luca Rossetto
  *
  */
-public abstract class AbstractTrackingDataTransformer extends AbstractTrackingDataSource implements
-		TrackingDataSource {
+public abstract class AbstractTrackingDataTransformer extends AbstractTrackingDataSource {
 	
 
 	public AbstractTrackingDataTransformer(TrackingDataSource source) {

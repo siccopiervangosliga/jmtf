@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * @author Luca Rossetto
  *
  */
-public abstract class AbstractTrackingDataBuffer extends AbstractTrackingDataSource implements TrackingDataUpdater {
+public abstract class AbstractTrackingDataBuffer extends AbstractTrackingDataSource{
 
 	protected LinkedList<TrackingDataSet> trackingDataqueue;
 	protected LinkedList<JMTFImage> imageQueue;

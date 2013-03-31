@@ -35,7 +35,7 @@ public abstract class AbstractTracker implements TrackingDataSource{
 	protected ImageSource source;
 	protected TrackingDataSet trackingDataSet;
 	
-	abstract public TrackingDataSet track();
+	abstract protected TrackingDataSet track();
 
 	/* (non-Javadoc)
 	 * @see jmtf.TrackingDataSource#getTrackingDataSet()

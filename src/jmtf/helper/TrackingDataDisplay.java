@@ -109,12 +109,18 @@ public class TrackingDataDisplay extends JFrame implements
 			
 			Enumeration<Integer> keys = this.track.tracks.keys();
 			while(keys.hasMoreElements()){
-				Blob b = this.track.tracks.get(keys.nextElement());
+				int k = keys.nextElement();
+				Blob b = this.track.tracks.get(k);
+				if(b == null){
+					continue;
+				}
 				int x = (int)(b.getCenter()[0]*this.zoom);
 				int y = (int)(b.getCenter()[1]*this.zoom);
 				
 				g.drawLine(x, y-5, x, y+5);
 				g.drawLine(x-5, y, x+5, y);
+				
+				g.drawString("id: " + k, x + 6, y + 6);
 			}
 			
 		}

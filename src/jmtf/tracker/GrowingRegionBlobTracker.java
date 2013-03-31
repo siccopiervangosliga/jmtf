@@ -4,9 +4,9 @@
 package jmtf.tracker;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 import jmtf.ImageSource;
@@ -23,7 +23,7 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 	private int threshold = 255;
 	
 	private ImageToGrayscale i2g;
-	private HashMap<Integer, LinkedList<LineBlob>> lineBlobs = new HashMap<>();
+	private HashMap<Integer, LinkedList<LineBlob>> lineBlobs = new HashMap<Integer, LinkedList<LineBlob>>();
 	
 	public GrowingRegionBlobTracker(ImageSource source, int threshold){
 		this.source = source;
@@ -35,7 +35,7 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 		this(source, 255);
 	}
 	
-	public TrackingDataSet track(){
+	protected TrackingDataSet track(){
 		JMTFImage img = this.i2g.getNextImage();
 		if(img == null){
 			return null;
@@ -102,7 +102,7 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 			while(lineblobs.hasNext()){
 				lb = lineblobs.next();
 				if(!blobMap.containsKey(lb.id)){
-					b = new RectBlob(lb.min, y, lb.max, y, lb.id);
+					b = new RectBlob(lb.min, y, lb.max, y, 0, lb.id);
 					blobMap.put(lb.id, b);
 				}else{
 					b = blobMap.get(lb.id);
@@ -116,16 +116,17 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 		}
 		
 		/*relable blob ids*/
-		Hashtable<Integer, Blob> blobs = new Hashtable<>();
+		ConcurrentHashMap<Integer, Blob> blobs = new ConcurrentHashMap<Integer, Blob>();
 		Iterator<Integer> keys = blobMap.keySet().iterator();
 		int i = 0;
 		while(keys.hasNext()){
 			b = blobMap.get(keys.next());
 			b.id = i;
+			b.updateMaxIntensity(img);
 			blobs.put(i++, b);
 		}
-				
-		return  new TrackingDataSet(blobs, img);
+		notifyListeners();
+		return new TrackingDataSet(blobs, img);
 		
 	}
 	
@@ -143,9 +144,7 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 				}
 			}
 		}
-		
 	}
-	
 }
 class LineBlob{
 	

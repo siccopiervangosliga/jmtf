@@ -3,8 +3,8 @@
  */
 package jmtf.transformers;
 
-import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import jmtf.AbstractTrackingDataBuffer;
 import jmtf.JMTFImage;
@@ -71,7 +71,7 @@ public class SingleLinearInterpolator extends AbstractTrackingDataBuffer {
 			this.trackingDataqueue.offer(input);
 			//if gap is to big, insert empty results
 			while(!this.imageQueue.isEmpty()){
-				this.trackingDataqueue.offer(new TrackingDataSet(new Hashtable<Integer, Blob>(), this.imageQueue.poll()));
+				this.trackingDataqueue.offer(new TrackingDataSet(new ConcurrentHashMap<Integer, Blob>(), this.imageQueue.poll()));
 			}
 			
 		}else{ //interpolate
@@ -87,7 +87,7 @@ public class SingleLinearInterpolator extends AbstractTrackingDataBuffer {
 					float t = (img.getFrameNumber() - last_frame);
 					pos[0] = Math.round(last_pos[0] + (t * dx));
 					pos[1] = Math.round(last_pos[1] + (t * dy));
-					Hashtable<Integer, Blob> ht = new Hashtable<Integer, Blob>();
+					ConcurrentHashMap<Integer, Blob> ht = new ConcurrentHashMap<Integer, Blob>();
 					ht.put(1, new InterpolatedBlob(pos));
 					this.trackingDataqueue.offer(new TrackingDataSet(ht, img));
 				}

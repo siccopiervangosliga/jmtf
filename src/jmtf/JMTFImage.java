@@ -270,9 +270,9 @@ public class JMTFImage {
 			return false;
 		if (isGrayscale != other.isGrayscale)
 			return false;
-		if (!Arrays.equals(pixels, other.pixels))
-			return false;
 		if (width != other.width)
+			return false;
+		if (!Arrays.equals(pixels, other.pixels))
 			return false;
 		return true;
 	}
@@ -287,5 +287,12 @@ public class JMTFImage {
 		int r2 = JMTFImage.getRed(color2), g2 = JMTFImage.getGreen(color2), b2 = JMTFImage.getBlue(color2);
 		return (r1-r2)*(r1-r2) + (g1-g2)*(g1-g2) + (b1-b2)*(b1-b2);
 	}
+	
+	@Override
+	protected JMTFImage clone(){
+		return this.copy();
+	}
+	
+	
 
 }

@@ -51,4 +51,12 @@ public class InterpolatedBlob implements Blob {
 		this.pos[1] += translate_y;
 	}
 
+	/* (non-Javadoc)
+	 * @see jmtf.tracker.Blob#getMaxIntensity()
+	 */
+	@Override
+	public int getMaxIntensity() {
+		return 100;
+	}
+
 }

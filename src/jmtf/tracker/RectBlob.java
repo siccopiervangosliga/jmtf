@@ -3,14 +3,16 @@
  */
 package jmtf.tracker;
 
+import jmtf.JMTFImage;
+
 /**
  * @author Luca Rossetto
  *
  */
 public class RectBlob implements Blob{
-	public int min_x, min_y, max_x, max_y, id;
+	public int min_x, min_y, max_x, max_y, intensity, id;
 	
-	public RectBlob(int min_x, int min_y, int max_x, int max_y, int id){
+	public RectBlob(int min_x, int min_y, int max_x, int max_y, int intensity, int id){
 		this.min_x = min_x;
 		this.min_y = min_y;
 		this.max_x = max_x;
@@ -42,5 +44,22 @@ public class RectBlob implements Blob{
 		this.min_y += translate_y;
 		this.max_x += translate_x;
 		this.max_y += translate_y;
+	}
+
+	/* (non-Javadoc)
+	 * @see jmtf.tracker.Blob#getMaxIntensity()
+	 */
+	@Override
+	public int getMaxIntensity() {
+		return intensity;
+	}
+	
+	void updateMaxIntensity(JMTFImage img){
+		intensity = 0;
+		for(int y = min_y; y <= max_y; ++y){
+			for(int x = min_x; x <= max_x; ++x){
+				intensity = Math.max(intensity, JMTFImage.getRed(img.getPixel(x, y)));
+			}
+		}
 	}
 }

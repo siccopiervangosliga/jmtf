@@ -23,7 +23,8 @@ public abstract class AbstractImageCombiner extends AbstractImageSource {
 	 */
 	@Override
 	public boolean hasMoreImages() {
-		return this.source1.hasMoreImages() && this.source2.hasMoreImages();
+		boolean s1 = this.source1.hasMoreImages(), s2 = this.source2.hasMoreImages();
+		return s1 && s2;
 	}
 
 	/* (non-Javadoc)
@@ -33,6 +34,7 @@ public abstract class AbstractImageCombiner extends AbstractImageSource {
 	public JMTFImage getNextImage() {
 		JMTFImage in1 = this.source1.getNextImage(), in2 = this.source2.getCurrentImage();
 		this.img = new JMTFImage(Math.min(in1.getWidth(), in2.getWidth()), Math.min(in1.getHeight(), in2.getHeight()));
+		this.img.setFrameNumber(in1.getFrameNumber());
 		combine(in1, in2, this.img);
 		notifyListeners();
 		return this.img;

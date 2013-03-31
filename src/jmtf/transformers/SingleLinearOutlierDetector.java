@@ -3,8 +3,8 @@
  */
 package jmtf.transformers;
 
-import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import jmtf.AbstractTrackingDataBuffer;
 import jmtf.TrackingDataSet;
@@ -85,17 +85,17 @@ public class SingleLinearOutlierDetector extends AbstractTrackingDataBuffer {
 		int  return_count = 0;
 		
 		if(remove_0){
-			this.tempQueue.set(0, new TrackingDataSet(new Hashtable<Integer, Blob>(), this.tempQueue.get(0).image));
+			this.tempQueue.set(0, new TrackingDataSet(new ConcurrentHashMap<Integer, Blob>(), this.tempQueue.get(0).image));
 			return_count = 1;
 		}
 		
 		if(remove_1){
-			this.tempQueue.set(1, new TrackingDataSet(new Hashtable<Integer, Blob>(), this.tempQueue.get(1).image));
+			this.tempQueue.set(1, new TrackingDataSet(new ConcurrentHashMap<Integer, Blob>(), this.tempQueue.get(1).image));
 			return_count = 2;
 		}
 		
 		if(remove_2){
-			this.tempQueue.set(2, new TrackingDataSet(new Hashtable<Integer, Blob>(), this.tempQueue.get(2).image));
+			this.tempQueue.set(2, new TrackingDataSet(new ConcurrentHashMap<Integer, Blob>(), this.tempQueue.get(2).image));
 			return_count = 3;
 		}
 		

@@ -3,7 +3,7 @@
  */
 package jmtf;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import jmtf.tracker.Blob;
 
@@ -13,10 +13,10 @@ import jmtf.tracker.Blob;
  */
 public class TrackingDataSet {
 
-	public Hashtable<Integer, Blob> tracks;
+	public ConcurrentHashMap<Integer, Blob> tracks;
 	public JMTFImage image;
 	
-	public TrackingDataSet(Hashtable<Integer, Blob> tracks, JMTFImage image){
+	public TrackingDataSet(ConcurrentHashMap<Integer, Blob> tracks, JMTFImage image){
 		this.image = image;
 		this.tracks = tracks;
 	}
@@ -55,9 +55,9 @@ public class TrackingDataSet {
 	/**
 	 * @return a copy of the TrackningDataSet
 	 */
-	@SuppressWarnings("unchecked")
 	public TrackingDataSet copy() {
-		return new TrackingDataSet((Hashtable<Integer, Blob>) tracks.clone(), image.copy());
+		
+		return new TrackingDataSet(new ConcurrentHashMap<Integer, Blob>(this.tracks), image.copy());
 	}
 	
 }

@@ -59,4 +59,28 @@ public class InterpolatedBlob implements Blob {
 		return 100;
 	}
 
+	/* (non-Javadoc)
+	 * @see jmtf.tracker.Blob#getWidth()
+	 */
+	@Override
+	public int getWidth() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see jmtf.tracker.Blob#getHeight()
+	 */
+	@Override
+	public int getHeight() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see jmtf.tracker.Blob#getHistogram()
+	 */
+	@Override
+	public int[] getHistogram() {
+		return new int[256];
+	}
+
 }

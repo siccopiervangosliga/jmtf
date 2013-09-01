@@ -14,7 +14,7 @@ public abstract class AbstractTrackingDataBuffer extends AbstractTrackingDataSou
 	protected LinkedList<TrackingDataSet> trackingDataqueue;
 	protected LinkedList<JMTFImage> imageQueue;
 	
-	public AbstractTrackingDataBuffer(TrackingDataSource source) {
+	protected AbstractTrackingDataBuffer(TrackingDataSource source) {
 		super(source);
 		this.trackingDataqueue = new LinkedList<TrackingDataSet>();
 		this.imageQueue = new LinkedList<JMTFImage>();

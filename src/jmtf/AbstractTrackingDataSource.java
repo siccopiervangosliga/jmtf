@@ -16,7 +16,7 @@ public abstract class AbstractTrackingDataSource implements TrackingDataSource {
 	protected TrackingDataSet trackingDataSet;
 	private ArrayList<TrackingDataUpdateListener> listeners = new ArrayList<TrackingDataUpdateListener>();
 	
-	public AbstractTrackingDataSource(TrackingDataSource source){
+	protected AbstractTrackingDataSource(TrackingDataSource source){
 		this.source = source;
 	}
 

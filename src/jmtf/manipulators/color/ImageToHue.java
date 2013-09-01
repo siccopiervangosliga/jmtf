@@ -33,12 +33,14 @@ public class ImageToHue extends AbstractImageManipulator {
 
 		
 		
-		for(int i = 0; i < input.getPixels().length; ++i){
+		//for(int i = 0; i < input.getPixels().length; ++i){
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
 			
-			c = input.getPixels()[i];
+			c = input.getPixel(x, y);
 			
 			if((c & 0xffffff) == 0){
-				input.getPixels()[i] = 0;
+				input.setPixel(x, y, 0);
 				continue;
 			}
 			
@@ -48,8 +50,9 @@ public class ImageToHue extends AbstractImageManipulator {
 			
 			h = (int)(Color.RGBtoHSB(r, g, b, null)[0] * 255f);
 			
-			input.getPixels()[i] = JMTFImage.getColor(h, h, h);
+			input.setPixel(x, y, JMTFImage.getColor(h, h, h));
 			
+		}
 		}
 		
 		input.setGrayscale(true);

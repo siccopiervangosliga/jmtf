@@ -41,13 +41,23 @@ public class IntensityMapper extends AbstractImageManipulator {
 		int[] redMap = this.redMap.getMap(),
 				greenMap = this.greenMap.getMap(),
 				blueMap = this.blueMap.getMap();
-		for(int i = 0; i < pixels.length; ++i){
-			r = JMTFImage.getRed(pixels[i]);
-			g = JMTFImage.getGreen(pixels[i]);
-			b = JMTFImage.getBlue(pixels[i]);
-			pixels[i] = JMTFImage.getColor(redMap[r], greenMap[g], blueMap[b]);
+		
+		
+		//for(int i = 0; i < pixels.length; ++i){
+		int col;
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
+		
+				col = input.getPixel(x, y);
+				
+			r = JMTFImage.getRed(col);
+			g = JMTFImage.getGreen(col);
+			b = JMTFImage.getBlue(col);
+			input.setPixel(x, y, JMTFImage.getColor(redMap[r], greenMap[g], blueMap[b]));
+			}
 		}
-		input.setPixels(pixels);
+		//}
+		//input.setPixels(pixels);
 
 	}
 	

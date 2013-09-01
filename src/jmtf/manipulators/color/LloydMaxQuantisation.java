@@ -103,9 +103,13 @@ public class LloydMaxQuantisation extends AbstractImageManipulator {
 		}
 		
 		int r = 0, g = 0, b = 0;
-		int[] pixels = new int[input.getPixels().length];
-		for(int i = 0; i < input.getPixels().length; ++i){
-			int col = JMTFImage.getRed(input.getPixels()[i]);
+		//int[] pixels = new int[input.getPixels().length];
+		//for(int i = 0; i < input.getPixels().length; ++i){
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
+				
+			
+			int col = JMTFImage.getRed(input.getPixel(x, y));
 			for(int j = 0; j < this.K_r; ++j){
 				if(col >= z_k_r[j] && col <= z_k_r[j+1]){
 					r = q_k_r[j];
@@ -131,11 +135,12 @@ public class LloydMaxQuantisation extends AbstractImageManipulator {
 				}
 			}
 			
-			pixels[i] = JMTFImage.getColor(r, g, b);
-			
+			//pixels[i] = JMTFImage.getColor(r, g, b);
+			input.setPixel(x, y, JMTFImage.getColor(r, g, b));
+		}
 		}
 		
-		input.setPixels(pixels);
+		//input.setPixels(pixels);
 
 	}
 	

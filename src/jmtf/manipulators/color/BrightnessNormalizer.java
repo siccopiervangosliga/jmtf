@@ -27,19 +27,27 @@ public class BrightnessNormalizer extends AbstractImageManipulator {
 	@Override
 	public void manipulate(JMTFImage input) {
 		float min = 255f, max = 0, brightness;
-		int[] pixels = input.getPixels();
-		for(int i = 0; i < pixels.length; ++i){
-			brightness = (float) (JMTFImage.getRed(pixels[i]) + JMTFImage.getGreen(pixels[i]) + JMTFImage.getBlue(pixels[i])) / 3.0f;
-			min = Math.min(min, brightness);
-			max = Math.max(max, brightness);
+		//int[] pixels = input.getPixels();
+		//for (int pixel : pixels) {
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
+				int col = input.getPixel(x, y);
+				brightness = (float) (JMTFImage.getRed(col) + JMTFImage.getGreen(col) + JMTFImage.getBlue(col)) / 3.0f;
+				min = Math.min(min, brightness);
+				max = Math.max(max, brightness);
+			}
 		}
 		if(max == min || (Math.abs(min) <= 0.01f && Math.abs(max) >= 254.99f)){
 			return;
 		}
 		float factor = 255f/(max - min);
 		
-		for(int i = 0; i < pixels.length; ++i){
-			pixels[i] = JMTFImage.getColor(Math.min(Math.max((int)(((JMTFImage.getRed(pixels[i])-min)*factor)),0),255), Math.min(Math.max((int)(((JMTFImage.getGreen(pixels[i])-min)*factor)),0),255), Math.min(Math.max((int)(((JMTFImage.getBlue(pixels[i])-min)*factor)),0),255));
+		//for(int i = 0; i < pixels.length; ++i){
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
+				int col = input.getPixel(x, y);
+				input.setPixel(x, y, JMTFImage.getColor(Math.min(Math.max((int)(((JMTFImage.getRed(col)-min)*factor)),0),255), Math.min(Math.max((int)(((JMTFImage.getGreen(col)-min)*factor)),0),255), Math.min(Math.max((int)(((JMTFImage.getBlue(col)-min)*factor)),0),255)));
+			}
 		}
 	}
 

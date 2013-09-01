@@ -33,7 +33,7 @@ public class CSVExporter {
 	}
 	/**
 	 * Exports the next tracking data set
-	 * @param frame the frame which this set is from
+	 * @return true if successful
 	 */
 	public boolean exportOne(){
 		TrackingDataSet data = this.source.getNextTrackingDataSet();
@@ -66,12 +66,12 @@ public class CSVExporter {
 	 */
 	public void exportAll(){
 		
-		while(exportOne());
+		while(exportOne()){/* do nothing */};
 	}
 	
-	public void finalize(){
+	public void finalize() throws Throwable{
 		this.writer.flush();
 		this.writer.close();
-		
+		super.finalize();
 	}
 }

@@ -9,10 +9,13 @@ package jmtf.tracker;
  */
 public interface Blob {
 
-	public int[] getCenter();
-	public int getArea();
-	public int getMaxIntensity();
-	public void scale(float scale_x, float scale_y);
-	public void translate(float translate_x, float translate_y);
+	int[] getCenter();
+	int getArea();
+	int getMaxIntensity();
+	int getWidth();
+	int getHeight();
+	int[] getHistogram();
+	void scale(float scale_x, float scale_y);
+	void translate(float translate_x, float translate_y);
 	
 }

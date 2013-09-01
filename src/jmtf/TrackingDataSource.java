@@ -10,7 +10,7 @@ package jmtf;
  */
 public interface TrackingDataSource extends TrackingDataUpdater {
 
-	public TrackingDataSet getTrackingDataSet();
-	public TrackingDataSet getNextTrackingDataSet();
+	TrackingDataSet getTrackingDataSet();
+	TrackingDataSet getNextTrackingDataSet();
 	
 }

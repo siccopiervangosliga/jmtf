@@ -105,7 +105,7 @@ public class SingleLinearOutlierDetector extends AbstractTrackingDataBuffer {
 
 	}
 
-	private int distance(int[] pos1, int[] pos2){
+	private static int distance(int[] pos1, int[] pos2){
 		int x = pos1[0] - pos2[0];
 		int y = pos1[1] - pos2[1];
 		return (x*x) + (y*y);

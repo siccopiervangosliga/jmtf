@@ -75,7 +75,7 @@ public class GreedyIDUnifier extends AbstractTrackingDataTransformer {
 		lastSet = input;
 	}
 	
-	private int squaredDistance(Blob b1, Blob b2){
+	private static int squaredDistance(Blob b1, Blob b2){
 		int[] cb1 = b1.getCenter(), cb2 = b2.getCenter();
 		return (cb1[0] - cb2[0]) * (cb1[0] - cb2[0]) + (cb1[1] - cb2[1]) * (cb1[1] - cb2[1]);
 	}

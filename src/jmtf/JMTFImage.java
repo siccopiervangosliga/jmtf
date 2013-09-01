@@ -27,6 +27,104 @@ public class JMTFImage {
 	
 	private String id;
 	
+	private ROI roi;
+	
+	/**
+	 * defines a Region of Interest
+	 * @author Luca Rossetto
+	 *
+	 */
+	public class ROI implements Cloneable{
+		
+		public ROI(){
+			minX = 0;
+			minY = 0;
+			maxX = width - 1;
+			maxY = height - 1;
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + maxX;
+			result = prime * result + maxY;
+			result = prime * result + minX;
+			result = prime * result + minY;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			ROI other = (ROI) obj;
+			if (!getOuterType().equals(other.getOuterType())) {
+				return false;
+			}
+			if (maxX != other.maxX) {
+				return false;
+			}
+			if (maxY != other.maxY) {
+				return false;
+			}
+			if (minX != other.minX) {
+				return false;
+			}
+			if (minY != other.minY) {
+				return false;
+			}
+			return true;
+		}
+
+		public ROI(int minx, int maxx, int miny, int maxy){
+			minX = minx;
+			maxX = maxx;
+			minY = miny;
+			maxY = maxy;
+			
+		}
+		public int minX, maxX, minY, maxY;
+		
+		public ROI clone(){
+			return new ROI(minX, maxX, minY, maxY);
+		}
+
+		public int getWidth(){
+			return maxX - minX + 1;
+		}
+		
+		public int getHeight(){
+			return maxY - minY + 1;
+		}
+		
+		public int getNumberOfPixels(){
+			return getWidth() * getHeight();
+		}
+		
+		@Override
+		public String toString() {
+			return "(" + minX + ", " + minY + ") to (" + maxX + ", " + maxY + ")";
+		}
+
+		private JMTFImage getOuterType() {
+			return JMTFImage.this;
+		}
+
+
+		public boolean isInside(int x, int y) {
+			return x >= minX && x <= maxX && y >= minY && y <= maxY;
+		}
+	}
+	
 	/**
 	 * Creates a JMTFImage from a BufferedImage
 	 * @param image
@@ -35,6 +133,7 @@ public class JMTFImage {
 		this.width = image.getWidth();
 		this.height = image.getHeight();
 		this.pixels = image.getRGB(0, 0, this.width, this.height, null, 0, this.width);
+		this.roi = new ROI();
 	}
 	/**
 	 * Creates a JMTFImage with specified dimensions
@@ -45,12 +144,13 @@ public class JMTFImage {
 		this.width = width;
 		this.height = height;
 		this.pixels = new int[this.width * this.height];
+		this.roi = new ROI();
 	}
 	/**
 	 * Creates a JMTFImage with specified dimensions and specified grayscale flag
 	 * @param width width of the new image
 	 * @param height height of the new image
-	 * @param isGreyScale true if all channels of the image have the same value
+	 * @param isGrayScale true if all channels of the image have the same value
 	 */
 	public JMTFImage(int width, int height, boolean isGrayScale){
 		this(width, height);
@@ -61,7 +161,7 @@ public class JMTFImage {
 	 * Creates a JMTFImage with specified dimensions, specified grayscale flag and an id
 	 * @param width width of the new image
 	 * @param height height of the new image
-	 * @param isGreyScale true if all channels of the image have the same value
+	 * @param isGrayScale true if all channels of the image have the same value
 	 * @param frame_number the frame number of the image
 	 */
 	public JMTFImage(int width, int height, boolean isGrayScale, int frame_number){
@@ -73,7 +173,7 @@ public class JMTFImage {
 	 * Creates a JMTFImage with specified dimensions, specified grayscale flag and an id
 	 * @param width width of the new image
 	 * @param height height of the new image
-	 * @param isGreyScale true if all channels of the image have the same value
+	 * @param isGrayScale true if all channels of the image have the same value
 	 * @param frame_number the frame number of the image
 	 * @param id the unique id of an image
 	 */
@@ -91,7 +191,7 @@ public class JMTFImage {
 	}
 	/**
 	 * sets the graysclae-flag
-	 * @param isGrayscale flag
+	 * @param isGreyscale flag
 	 */
 	public void setGrayscale(boolean isGreyscale) {
 		this.isGrayscale = isGreyscale;
@@ -197,6 +297,7 @@ public class JMTFImage {
 	public JMTFImage copy(){
 		JMTFImage _ret = new JMTFImage(this.width, this.height);
 		_ret.pixels = this.pixels.clone();
+		_ret.roi = roi.clone();
 		_ret.frame_number = this.frame_number;
 		_ret.isGrayscale = this.isGrayscale;
 		return _ret;
@@ -207,11 +308,73 @@ public class JMTFImage {
 	}
 	
 	public BufferedImage toBufferedImage(BufferedImage img){
-		if(img == null){
+		if(img == null || img.getWidth() != this.getWidth() || img.getHeight() != this.getHeight()){
 			img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
 		}
 		img.setRGB(0, 0, this.getWidth(), this.getHeight(), this.getPixels(), 0, this.getWidth());
 		return img;
+	}
+	
+	public int getAvgColor(){
+		int r = 0, g = 0, b = 0;
+		/*for(int i = 0; i < this.pixels.length; ++i){
+			r += getRed(this.pixels[i]);
+			g += getGreen(this.pixels[i]);
+			b += getBlue(this.pixels[i]);
+		}*/
+		for (int x = roi.minX; x <= roi.maxX; ++x) {
+			for (int y = roi.minY; y <= roi.maxY; ++y) {
+				int c = getPixel(x, y);
+				r += getRed(c);
+				g += getGreen(c);
+				b += getBlue(c);
+			}
+		}
+		return getColor(r / this.pixels.length, g / this.pixels.length, b / this.pixels.length);
+	}
+	
+	public int getMedianColor(){
+		/*int[] r = new int[this.pixels.length], g  = new int[this.pixels.length], b = new int[this.pixels.length];
+		for(int i = 0; i < this.pixels.length; ++i){
+			r[i] = getRed(this.pixels[i]);
+			g[i] = getGreen(this.pixels[i]);
+			b[i] = getBlue(this.pixels[i]);
+		}*/
+		
+		int[] r = new int[roi.getNumberOfPixels()], g  = new int[roi.getNumberOfPixels()], b = new int[roi.getNumberOfPixels()];
+		int i = 0;
+		for (int x = roi.minX; x <= roi.maxX; ++x) {
+			for (int y = roi.minY; y <= roi.maxY; ++y) {
+				int c = getPixel(x, y);
+				r[i] = getRed(c);
+				g[i] = getGreen(c);
+				b[i++] = getBlue(c);
+			}
+		}
+		
+		Arrays.sort(r);
+		Arrays.sort(g);
+		Arrays.sort(b);
+		
+		int med = getColor(r[this.pixels.length / 2], g[this.pixels.length / 2], b[this.pixels.length / 2]);
+		
+		r = null;
+		g = null;
+		b = null;
+		
+		int index = 0, dist, min_dist = Integer.MAX_VALUE;
+		for(i = 0; i < this.pixels.length; ++i){
+			dist = squaredColorDistance(this.pixels[i], med);
+			if(dist < min_dist){
+				if(dist == 0){
+					return med;
+				}
+				index = i;
+				min_dist = dist;
+			}
+		}
+		
+		return this.pixels[index];
 	}
 	
 	/**
@@ -238,44 +401,27 @@ public class JMTFImage {
 		this.id = id;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + height;
-		result = prime * result + frame_number;
-		result = prime * result + (isGrayscale ? 1231 : 1237);
-		result = prime * result + Arrays.hashCode(pixels);
-		result = prime * result + width;
-		return result;
+	public ROI getROI(){
+		return this.roi;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	
+	/**
+	 * crops the image to region of interest
 	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		JMTFImage other = (JMTFImage) obj;
-		if (height != other.height)
-			return false;
-		if (frame_number != other.frame_number)
-			return false;
-		if (isGrayscale != other.isGrayscale)
-			return false;
-		if (width != other.width)
-			return false;
-		if (!Arrays.equals(pixels, other.pixels))
-			return false;
-		return true;
+	public void cropToROI(){
+		int[] newPixels = new int[roi.getWidth() * roi.getHeight()];
+		int i = 0;
+		for(int y = roi.minY; y <= roi.maxY; ++y){
+			for(int x = roi.minX; x <= roi.maxX; ++x){
+				newPixels[i++] = getPixel(x, y);
+			}
+		}
+		this.pixels = newPixels;
+		this.width = roi.getWidth();
+		this.height = roi.getHeight();
+		this.roi = new ROI();
 	}
+	
 	/**
 	 * Calculates (r1-r2)*(r1-r2) + (g1-g2)*(g1-g2) + (b1-b2)*(b1-b2)
 	 * @param color1
@@ -291,6 +437,68 @@ public class JMTFImage {
 	@Override
 	protected JMTFImage clone(){
 		return this.copy();
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + frame_number;
+		result = prime * result + height;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (isGrayscale ? 1231 : 1237);
+		result = prime * result + Arrays.hashCode(pixels);
+		result = prime * result + ((roi == null) ? 0 : roi.hashCode());
+		result = prime * result + width;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		JMTFImage other = (JMTFImage) obj;
+		if (frame_number != other.frame_number) {
+			return false;
+		}
+		if (height != other.height) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (isGrayscale != other.isGrayscale) {
+			return false;
+		}
+		if (!Arrays.equals(pixels, other.pixels)) {
+			return false;
+		}
+		if (roi == null) {
+			if (other.roi != null) {
+				return false;
+			}
+		} else if (!roi.equals(other.roi)) {
+			return false;
+		}
+		if (width != other.width) {
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return this.width == 0 || this.height == 0;
 	}
 	
 	

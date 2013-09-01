@@ -13,12 +13,12 @@ public abstract class AbstractIntensityMapManipulator implements IntensityMap {
 	private int selector;
 	private IntensityMap intensitymap;
 	
-	public AbstractIntensityMapManipulator(IntensityMap source, int selector){
+	protected AbstractIntensityMapManipulator(IntensityMap source, int selector){
 		this.intensitymap = source;
 		this.selector = selector;
 	}
 	
-	public AbstractIntensityMapManipulator(IntensityMap source){
+	protected AbstractIntensityMapManipulator(IntensityMap source){
 		this(source, 0);
 	}
 	

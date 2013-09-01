@@ -9,9 +9,9 @@ package jmtf.manipulators;
  */
 public interface IntensityMap {
 	
-	public static final int[] nullmap = new int[256];
+	int[] nullmap = new int[256];
 
-	public static final IntensityMap NULLMAP = new IntensityMap() {
+	IntensityMap NULLMAP = new IntensityMap() {
 		
 		@Override
 		public int[] getMap(int selector) {
@@ -24,8 +24,8 @@ public interface IntensityMap {
 		}
 	};
 	
-	public int[] getMap();
+	int[] getMap();
 	
-	public int[] getMap(int selector);
+	int[] getMap(int selector);
 	
 }

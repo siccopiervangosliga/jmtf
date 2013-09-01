@@ -28,6 +28,8 @@ public class TrackingDataSetToFileExporter implements
 	private BufferedImage img;
 	private TrackingDataSet track;
 	private int size;
+	private Color col = Color.red;
+	private int lineWidth = 1;
 	
 	/**
 	 * 
@@ -47,6 +49,18 @@ public class TrackingDataSetToFileExporter implements
 		this(folder, prefix, format, 5);
 	}
 	
+	public void setColor(Color c){
+		this.col = c;
+	}
+	
+	public void setSize(int size){
+		this.size = size;
+	}
+	
+	public void setLineWidth(int width){
+		this.lineWidth = width;
+	}
+	
 	/* (non-Javadoc)
 	 * @see jmtf.TrackingDataUpdateListener#update(jmtf.TrackingDataSet)
 	 */
@@ -63,16 +77,19 @@ public class TrackingDataSetToFileExporter implements
 		
 		Graphics g = this.img.getGraphics();
 		
-		g.setColor(Color.red);
+		g.setColor(this.col);
 		
 		Enumeration<Integer> keys = this.track.tracks.keys();
 		while(keys.hasMoreElements()){
 			Blob b = this.track.tracks.get(keys.nextElement());
-			int x = (int)b.getCenter()[0];
-			int y = (int)b.getCenter()[1];
+			int x = b.getCenter()[0];
+			int y = b.getCenter()[1];
 			
-			g.drawLine(x, y - this.size, x, y + this.size);
-			g.drawLine(x - this.size, y, x + this.size, y);
+			for(int i = -(lineWidth - 1) / 2; i <= lineWidth / 2; ++i){
+				g.drawLine(x + i, y - this.size, x + i, y + this.size);
+				g.drawLine(x - this.size, y + i, x + this.size, y + i);
+			}
+			
 		}
 		
 		try {

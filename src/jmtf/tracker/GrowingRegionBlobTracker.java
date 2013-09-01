@@ -47,15 +47,15 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 		
 		
 		
-		for(int y = 0; y < img.getHeight(); ++y){
-			for(int x = 0; x < img.getWidth(); ++x){
+		for(int y = img.getROI().minY; y <= img.getROI().maxY; ++y){
+			for(int x = img.getROI().minX; x <= img.getROI().maxX; ++x){
 				
 				int val = JMTFImage.getRed(img.getPixel(x, y));
 				
 				if(val >= threshold){
 					int start = x;
 					
-					for(; val >= threshold; val = JMTFImage.getRed(img.getPixel(++x, y))); // as soon as x is out of range, pixelvalue will be 0
+					for(; val >= threshold && ++x <= img.getROI().maxX; val = JMTFImage.getRed(img.getPixel(x, y)));
 					
 					int end = x - 1;
 					
@@ -122,10 +122,9 @@ public class GrowingRegionBlobTracker extends AbstractTracker{
 		while(keys.hasNext()){
 			b = blobMap.get(keys.next());
 			b.id = i;
-			b.updateMaxIntensity(img);
+			b.updateImageRelatedData(img);
 			blobs.put(i++, b);
 		}
-		notifyListeners();
 		return new TrackingDataSet(blobs, img);
 		
 	}
@@ -150,7 +149,7 @@ class LineBlob{
 	
 	public int min, max, id;
 	
-	public LineBlob(int min, int max, int id){
+	LineBlob(int min, int max, int id){
 		this.min = min;
 		this.max = max;
 		this.id = id;

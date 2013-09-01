@@ -35,7 +35,6 @@ public class FolderImageSource extends AbstractImageSource {
 		this.folder = folder;
 		
 		images = this.folder.listFiles(this.filter);
-		
 	}
 	
 	/**

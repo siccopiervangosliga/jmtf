@@ -10,7 +10,7 @@ package jmtf;
 public abstract class AbstractTrackingDataTransformer extends AbstractTrackingDataSource {
 	
 
-	public AbstractTrackingDataTransformer(TrackingDataSource source) {
+	protected AbstractTrackingDataTransformer(TrackingDataSource source) {
 		super(source);
 	}
 
@@ -25,6 +25,6 @@ public abstract class AbstractTrackingDataTransformer extends AbstractTrackingDa
 		return this.trackingDataSet;
 	}
 	
-	abstract public void transform(TrackingDataSet input);
+	public abstract void transform(TrackingDataSet input);
 
 }

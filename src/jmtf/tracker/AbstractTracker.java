@@ -35,7 +35,7 @@ public abstract class AbstractTracker implements TrackingDataSource{
 	protected ImageSource source;
 	protected TrackingDataSet trackingDataSet;
 	
-	abstract protected TrackingDataSet track();
+	protected abstract TrackingDataSet track();
 
 	/* (non-Javadoc)
 	 * @see jmtf.TrackingDataSource#getTrackingDataSet()
@@ -55,7 +55,7 @@ public abstract class AbstractTracker implements TrackingDataSource{
 		return this.trackingDataSet;
 	}
 	
-	protected void notifyListeners(){
+	private void notifyListeners(){
 		Iterator<TrackingDataUpdateListener> iter = this.listeners.iterator();
 		while(iter.hasNext()){
 			iter.next().update(this.trackingDataSet);

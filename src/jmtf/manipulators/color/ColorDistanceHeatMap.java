@@ -33,18 +33,21 @@ public class ColorDistanceHeatMap extends AbstractImageManipulator {
 	 */
 	@Override
 	public void manipulate(JMTFImage input) {
-		int[] pixels = input.getPixels();
-		for (int i = 0; i < pixels.length; ++i) {
-			double dist = Math.sqrt((float) JMTFImage.squaredColorDistance(
-					this.color, pixels[i]));
-			if (dist > this.threshold) {
-				pixels[i] = 0;
-			} else {
-				int col = (int) Math
-						.round(((this.threshold - dist) / threshold) * 255f);
-				pixels[i] = JMTFImage.getColor(col, col, col);
+		//int[] pixels = input.getPixels();
+		//for (int i = 0; i < pixels.length; ++i) {
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
+				double dist = Math.sqrt((float) JMTFImage.squaredColorDistance(
+						this.color, input.getPixel(x, y)));
+				if (dist > this.threshold) {
+					input.setPixel(x, y, 0);
+				} else {
+					int col = (int) Math
+							.round(((this.threshold - dist) / threshold) * 255f);
+					input.setPixel(x, y, JMTFImage.getColor(col, col, col));
+				}
+	
 			}
-
 		}
 		input.setGrayscale(true);
 	}

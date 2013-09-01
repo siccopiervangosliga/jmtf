@@ -25,13 +25,13 @@ public abstract class AbstractImageSource implements ImageSource, ImageUpdater {
 	 * @see jmtf.ImageSource#hasMoreImages()
 	 */
 	@Override
-	abstract public boolean hasMoreImages();
+	public abstract boolean hasMoreImages();
 
 	/* (non-Javadoc)
 	 * @see jmtf.ImageSource#getNextImage()
 	 */
 	@Override
-	abstract public JMTFImage getNextImage();
+	public abstract JMTFImage getNextImage();
 
 	/* (non-Javadoc)
 	 * @see jmtf.ImageSource#getCurrentImage()

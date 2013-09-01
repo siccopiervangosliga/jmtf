@@ -13,20 +13,19 @@ public interface ImageManipulator extends ImageSource {
 	/**
 	 * Performs the actual image manipulation
 	 * @param input the input image to manipulate
-	 * @return the manipulated image
 	 */
-	public void manipulate(JMTFImage input);
+	void manipulate(JMTFImage input);
 	
 	/**
 	 * returns the current ImageSource of the ImageManipulator
 	 * @return the current ImageSource
 	 */
-	public ImageSource getSource();
+	ImageSource getSource();
 	
 	/**
 	 * sets the ImageSource for the ImageManipulator
 	 * @param source the ImageSource to set
 	 */
-	public void setSource(ImageSource source);
+	void setSource(ImageSource source);
 	
 }

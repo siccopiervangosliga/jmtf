@@ -30,9 +30,9 @@ public class ImageAdder extends AbstractImageCombiner {
 				int c1 = input1.getPixel(x, y);
 				int c2 = input2.getPixel(x, y);
 				
-				int r = Math.max(0, Math.min(255, (int)(this.a * JMTFImage.getRed(c1) + JMTFImage.getRed(c2))));
-				int g = Math.max(0, Math.min(255, (int)(this.a * JMTFImage.getGreen(c1) + JMTFImage.getGreen(c2))));
-				int b = Math.max(0, Math.min(255, (int)(this.a * JMTFImage.getBlue(c1) + JMTFImage.getBlue(c2))));
+				int r = Math.max(0, (int)(this.a * JMTFImage.getRed(c1) + JMTFImage.getRed(c2)));
+				int g = Math.max(0, (int)(this.a * JMTFImage.getGreen(c1) + JMTFImage.getGreen(c2)));
+				int b = Math.max(0, (int)(this.a * JMTFImage.getBlue(c1) + JMTFImage.getBlue(c2)));
 				
 				output.setPixel(x, y, JMTFImage.getColor(r, g, b));
 			}

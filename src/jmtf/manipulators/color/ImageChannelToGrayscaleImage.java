@@ -33,24 +33,26 @@ public class ImageChannelToGrayscaleImage extends AbstractImageManipulator {
 			return;
 		}
 		
-		for(int i = 0; i < input.getPixels().length; ++i){
+		for (int x = input.getROI().minX; x <= input.getROI().maxX; ++x) {
+			for (int y = input.getROI().minY; y <= input.getROI().maxY; ++y) {
 			int c = 0;
 			switch(this.channel){
 			
 			case RED:{
-				c = JMTFImage.getRed(input.getPixels()[i]);
+				c = JMTFImage.getRed(input.getPixel(x, y));
 				break;
 			}
 			case GREEN:{
-				c = JMTFImage.getGreen(input.getPixels()[i]);
+				c = JMTFImage.getGreen(input.getPixel(x, y));
 				break;
 			}
 			case BLUE:{
-				c = JMTFImage.getBlue(input.getPixels()[i]);
+				c = JMTFImage.getBlue(input.getPixel(x,y));
 				break;
 			}
 			}
-			input.getPixels()[i] = JMTFImage.getColor(c, c, c);
+			input.setPixel(x, y, JMTFImage.getColor(c, c, c));
+		}
 		}
 
 	}

@@ -15,18 +15,18 @@ public interface ImageSource {
 	 * Checks if the ImageSource can provide a new image when calling getNextImage()
 	 * @return result of the check
 	 */
-	public boolean hasMoreImages();
+	boolean hasMoreImages();
 	
 	/**
 	 * Gets the next image from specified source. Returns null if there are no more images.
 	 * @return next image if available, null otherwise
 	 */
-	public JMTFImage getNextImage();
+	JMTFImage getNextImage();
 	
 	/**
 	 * Gets the current image from the source. Returns null if there is none.
 	 * @return current image if available, null otherwise
 	 */
-	public JMTFImage getCurrentImage();
+	JMTFImage getCurrentImage();
 	
 }

@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import javax.swing.JFrame;
 
 import jmtf.JMTFImage;
+import jmtf.JMTFImage.ROI;
 import jmtf.TrackingDataSet;
 import jmtf.tracker.Blob;
 
@@ -24,6 +25,7 @@ public class CombinedDataDisplay extends JFrame {
 	private float zoom;
 	private BufferedImage img, canvas;
 	private TrackingDataSet[] data;
+	private ROI roi;
 	
 	public CombinedDataDisplay(String title, float zoom){
 		super(title);
@@ -41,6 +43,7 @@ public class CombinedDataDisplay extends JFrame {
 			this.img = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
 		}
 		img.toBufferedImage(this.img);
+		this.roi = img.getROI();
 		this.setSize((int) (this.img.getWidth() * this.zoom),
 				(int) (this.img.getHeight() * this.zoom));
 		
@@ -74,6 +77,9 @@ public class CombinedDataDisplay extends JFrame {
 					g2.drawString("id: " + k, x + 10, y + 10);
 				}
 			}
+			
+			g2.setColor(Color.RED);
+			g2.drawRect((int)(roi.minX * this.zoom), (int)(roi.minY * this.zoom), (int)(roi.getWidth() * this.zoom), (int)(roi.getHeight() * this.zoom));
 		}
 		
 		repaint();

@@ -12,11 +12,11 @@ public interface TrackingDataUpdater {
 	 * Adds a TrackingDataUpdateListener to the list of listeners to notify
 	 * @param listener TrackingDataUpdateListener to add to the list
 	 */
-	public void addTrackingDataUpdateListener(TrackingDataUpdateListener listener);
+	void addTrackingDataUpdateListener(TrackingDataUpdateListener listener);
 	
 	/**
 	 * Removes a TrackingDataUpdateListener to the list of listeners to notify
 	 * @param listener TrackingDataUpdateListener to remove from the list
 	 */
-	public void removeTrackingDataUpdateListener(TrackingDataUpdateListener listener);
+	void removeTrackingDataUpdateListener(TrackingDataUpdateListener listener);
 }

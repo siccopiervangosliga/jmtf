@@ -22,7 +22,7 @@ public abstract class AbstractImageManipulator extends AbstractImageSource
 
 	private ImageSource source;
 
-	public AbstractImageManipulator(ImageSource source){
+	protected AbstractImageManipulator(ImageSource source){
 		this.source = source;
 	}
 	

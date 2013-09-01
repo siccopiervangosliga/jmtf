@@ -29,6 +29,7 @@ public class TrackingDataDisplay extends JFrame implements
 	private BufferedImage img;
 	private float zoom = 1.0f;
 	private String title;
+	private Color col = Color.red;
 
 	/* (non-Javadoc)
 	 * @see jmtf.TrackingDataUpdateListener#update(jmtf.TrackingDataSet)
@@ -51,9 +52,8 @@ public class TrackingDataDisplay extends JFrame implements
 
 	/**
 	 * @param title Title of the window
-	 * @throws HeadlessException
 	 */
-	public TrackingDataDisplay(String title) throws HeadlessException {
+	public TrackingDataDisplay(String title){
 		this(title, 1.0f);
 	}
 
@@ -96,6 +96,9 @@ public class TrackingDataDisplay extends JFrame implements
 		this.setTitle(this.title + " (" + (this.zoom * 100) + "%)");
 	}
 
+	public void setColor(Color c){
+		this.col = c;
+	}
 	
 	@Override
 	public void paint(Graphics g) {
@@ -105,7 +108,7 @@ public class TrackingDataDisplay extends JFrame implements
 					(int) (this.img.getWidth() * this.zoom),
 					(int) (this.img.getHeight() * this.zoom), null);
 			
-			g.setColor(Color.red);
+			g.setColor(this.col);
 			
 			Enumeration<Integer> keys = this.track.tracks.keys();
 			while(keys.hasMoreElements()){
